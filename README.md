@@ -11,9 +11,8 @@ Este repositório contém dois sistemas de recomendação de músicas bossa nova
 1. Baixe o dataset presente no repositório;
 2. Você pode executar os códigos de duas maneiras:
 
---> VS Code (local) -> Baixe os arquivos `.py` (bibliotecas utilizadas:)
+--> VS Code (local) -> Baixe os arquivos `.py` (bibliotecas utilizadas: pandas, re, unicodedata, numpy, scikit-learn, math, nltk e openpyxl)
 --> 
 
-```bash
-pip install pandas numpy scikit-learn nltk openpyxl
+
 
