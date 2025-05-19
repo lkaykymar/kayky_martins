@@ -1,9 +1,19 @@
-origem dataset: https://www.kaggle.com/datasets/mcarujo/bossa-nova-lyrics
+# Sistemas de Recomendação
 
-Passo 1: Baixe o dataset no seu dispositivo --> https://github.com/lkaykymar/kayky_martins/blob/main/bossa_nova_songs_portugues.xlsx
+Este repositório contém dois sistemas de recomendação de músicas bossa nova baseados em similaridade do cosseno:
 
-passo 2: Abra o código no repositório e selecione open in colab;
+1. **Por Título** – Recomenda músicas com nomes parecidos ao que o usuário digitar.
+2. **Por Letra** – Recomenda músicas com letras semelhantes ao trecho inserido.
+3. **OBS** - Os Algoritmos se baseiam no mesmo dataset
+   
+## 💻 Como Usar
 
-passo 3: Faça o upload do dataset no colab
+1. Baixe o dataset presente no repositório;
+2. Você pode executar os códigos de duas maneiras:
 
-passo 4: Execute o código.
+--> VS Code (local) -> Baixe os arquivos `.py` (bibliotecas utilizadas:)
+--> 
+
+```bash
+pip install pandas numpy scikit-learn nltk openpyxl
+
