@@ -7,49 +7,48 @@ from sklearn.metrics.pairwise import cosine_similarity
 import math
 import nltk
 from nltk.corpus import stopwords
-
-# Baixando a lista de stopwords 
+ 
 nltk.download('stopwords')
-stop_words = set(stopwords.words('portuguese'))  # Stopwords em português
+stop_words = set(stopwords.words('portuguese'))  
 
 def preprocess_lyrics(lyrics):
     if pd.isna(lyrics):
         return ""
-    lyrics = lyrics.lower()  # Tudo minúsculo
-    lyrics = re.sub(r'[^\w\s]', '', lyrics)  # Remove pontuações
-    lyrics = ''.join(char for char in unicodedata.normalize('NFD', lyrics) if unicodedata.category(char) != 'Mn')  # Remove acentos
-    lyrics = ' '.join(word for word in lyrics.split() if word not in stop_words)  # Remove stopwords
+    lyrics = lyrics.lower()  
+    lyrics = re.sub(r'[^\w\s]', '', lyrics)  
+    lyrics = ''.join(char for char in unicodedata.normalize('NFD', lyrics) if unicodedata.category(char) != 'Mn')  
+    lyrics = ' '.join(word for word in lyrics.split() if word not in stop_words)  
     return lyrics
 
 def recommend_songs(user_input, songs_df):
-    user_input = preprocess_lyrics(user_input)  # Pré-processa a entrada
+    user_input = preprocess_lyrics(user_input)  
 
-    all_lyrics = songs_df['cleaned_song_lyrics'].tolist() + [user_input]  # Letras + entrada
+    all_lyrics = songs_df['cleaned_song_lyrics'].tolist() + [user_input]  
 
-    vectorizer = CountVectorizer(binary=True)  # Bag of words binário
+    vectorizer = CountVectorizer(binary=True)  
     bow_matrix = vectorizer.fit_transform(all_lyrics)
 
-    similarities = cosine_similarity(bow_matrix[-1], bow_matrix[:-1])[0]  # Similaridade com todas as músicas
+    similarities = cosine_similarity(bow_matrix[-1], bow_matrix[:-1])[0]  
     angles = [round(math.degrees(math.acos(sim)), 1) if -1 <= sim <= 1 else None for sim in similarities]
 
     songs_df['similarity'] = similarities
     songs_df['angle_degrees'] = angles
 
-    recommended_songs = songs_df.sort_values(by='similarity', ascending=False).head(10)  # Top 10
+    recommended_songs = songs_df.sort_values(by='similarity', ascending=False).head(10)  
     return recommended_songs[['song_name', 'artist', 'song_lyrics']]
 
-# Caminho para o arquivo Excel 
+ 
 data_path = 'bossa_nova_songs_portugues.xlsx'
 songs_df = pd.read_excel(data_path, engine="openpyxl")
 
-# Limpa as letras
+
 songs_df['cleaned_song_lyrics'] = songs_df['song_lyrics'].apply(preprocess_lyrics)
 
-# Entrada do usuário
+
 user_input = input("Digite a letra ou parte da letra da música para recomendar: ")
 recommendations = recommend_songs(user_input, songs_df)
 
-# Limite de caracteres para mostrar do trecho da letra
+
 MAX_LETRA = 150
 
 print("\nMúsicas recomendadas:")
